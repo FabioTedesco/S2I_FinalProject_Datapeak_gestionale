@@ -13,11 +13,19 @@ $db = $database->connect();
 // Instantiate Prodotto object
 $prodotti = new Prodotto($db);
 
-$offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
+// Get parameters from URL
+$params = [
+    'id' => isset($_GET['id']) ? $_GET['id'] : null,
+    'nome' => isset($_GET['nome']) ? $_GET['nome'] : null,
+    'barcode' => isset($_GET['barcode']) ? $_GET['barcode'] : null,
+    'categoria' => isset($_GET['categoria']) ? $_GET['categoria'] : null,
+    'taglia' => isset($_GET['taglia']) ? $_GET['taglia'] : null,
+    'limit' => isset($_GET['limit']) ? $_GET['limit'] : null,
+    'offset' => isset($_GET['offset']) ? $_GET['offset'] : null,
+];
 
-
-// prodotti read query
-$result = $prodotti->read($offset);
+// prodotti filter query
+$result = $prodotti->filter($params);
 // Get row count
 $num = $result->rowCount();
 

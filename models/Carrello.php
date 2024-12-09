@@ -1,5 +1,11 @@
 <?php
 
+// scannerizza prodotto
+//cerca prodotto con barcode=....
+//crea elemento carrello (tabella con campi: id, operatore, totaleComplessivo, ivaTotale, tsCreazione, tsModifica, metodoPagamento, emailCliente)
+//aggiungi prodotto al carrello
+//return
+
 class Carrello
 {
     private $conn;
@@ -21,20 +27,11 @@ class Carrello
         $this->conn = $db;
     }
 
-    // Funzione per scannerizzare il prodotto e cercarlo tramite il barcode
-    public function getProdottoById($barcode)
-    {
-        $query = 'SELECT * FROM prodotti WHERE barcode = :barcode';
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':barcode', $barcode);
-        $stmt->execute();
-        return $stmt;
-    }
 
     // Funzione per creare un nuovo carrello
     public function creaCarrello($operatore_id)
     {
-        $query = 'INSERT INTO carrelli (operatore, totaleComplessivo, ivaTotale, created_at, metodoPagamento, emailCliente) VALUES (:operatore, 0, 0, NOW(), NULL, NULL)';
+        $query = 'INSERT INTO carrelli (operatore_id, totaleComplessivo, ivaTotale, created_at, metodoPagamento, emailCliente) VALUES (:operatore, 0, 0, NOW(), NULL, NULL)';
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':operatore', $operatore_id);
         if ($stmt->execute()) {

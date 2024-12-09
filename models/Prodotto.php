@@ -48,14 +48,48 @@ class Prodotto
         return false;
     }
 
-
-    //Get Prodotti and get Prodotti filtered by id, barcode, nome, categoria, taglia
-    public function read($params = [])
+    // Get prodotti
+    public function read($offset)
     {
         // Crea la query base
         $query = 'SELECT 
-          id, nome, descrizione, prezzoOriginale, prezzoOutlet, scontoProdotto, barcode, giacenza, categoria, colore, taglia
-          FROM ' . $this->table;
+              id, nome, descrizione, prezzoOriginale, prezzoOutlet, scontoProdotto, barcode, giacenza, categoria, colore, taglia
+              FROM ' . $this->table . ' LIMIT 30';
+
+        if (!empty($offset)) {
+
+            $query .= ' OFFSET ' . $offset;
+        }
+
+        // Prepara lo statement
+        $stmt = $this->conn->prepare($query);
+
+        // Esegui la query
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    //Get categories
+    public function getCategories()
+    {
+        // Query per ottenere categorie uniche
+        $query = 'SELECT DISTINCT categoria FROM ' . $this->table . ' ORDER BY categoria ASC';
+
+        // Prepara ed esegui lo statement
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    //filter by barcode (get all products with same name) & by categoria & by nome
+    public function filter($params = [])
+    {
+        // Crea la query base
+        $query = 'SELECT 
+                  id, nome, descrizione, prezzoOriginale, prezzoOutlet, scontoProdotto, barcode, giacenza, categoria, colore, taglia
+                  FROM ' . $this->table;
 
         // Costruisci la condizione dinamicamente
         $conditions = [];
@@ -63,7 +97,8 @@ class Prodotto
             $conditions[] = 'id = :id';
         }
         if (!empty($params['barcode'])) {
-            $conditions[] = 'barcode = :barcode';
+            $subQuery = '(SELECT nome FROM ' . $this->table . ' WHERE barcode = :barcode)';
+            $conditions[] = 'nome = ' . $subQuery;
         }
         if (!empty($params['nome'])) {
             $conditions[] = 'nome LIKE :nome';
@@ -71,13 +106,22 @@ class Prodotto
         if (!empty($params['categoria'])) {
             $conditions[] = 'categoria LIKE :categoria';
         }
-        if (!empty($params['taglia'])) {
-            $conditions[] = 'taglia LIKE :taglia';
-        }
 
         // Aggiungi condizioni alla query se esistono
         if (count($conditions) > 0) {
             $query .= ' WHERE ' . implode(' AND ', $conditions);
+        }
+
+        // Aggiungi LIMIT e OFFSET
+        $limit = 30; // Valore di default per limit
+        if (!empty($params['limit'])) {
+            $limit = intval($params['limit']);
+        }
+        if (!empty($params['offset'])) {
+            $offset = intval($params['offset']);
+            $query .= ' LIMIT ' . $limit . ' OFFSET ' . $offset;
+        } else {
+            $query .= ' LIMIT ' . $limit;
         }
 
         // Prepara lo statement
@@ -85,22 +129,18 @@ class Prodotto
 
         // Bind dei parametri se esistono
         if (!empty($params['id'])) {
-            $stmt->bindParam(':id', $params['id']);
+            $stmt->bindParam(':id', $params['id'], PDO::PARAM_INT);
         }
         if (!empty($params['barcode'])) {
-            $stmt->bindParam(':barcode', $params['barcode']);
+            $stmt->bindParam(':barcode', $params['barcode'], PDO::PARAM_STR);
         }
         if (!empty($params['nome'])) {
             $nome = '%' . $params['nome'] . '%';
-            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':nome', $nome, PDO::PARAM_STR);
         }
         if (!empty($params['categoria'])) {
             $categoria = '%' . $params['categoria'] . '%';
-            $stmt->bindParam(':categoria', $categoria);
-        }
-        if (!empty($params['taglia'])) {
-            $taglia = '%' . $params['taglia'] . '%';
-            $stmt->bindParam(':taglia', $taglia);
+            $stmt->bindParam(':categoria', $categoria, PDO::PARAM_STR);
         }
 
         // Esegui la query
@@ -122,15 +162,15 @@ class Prodotto
         $stmt = $this->conn->prepare($query);
 
         // clean data
-        $this->nome = htmlspecialchars(strip_tags($this->nome));
+        $this->nome = strtoupper(htmlspecialchars(strip_tags($this->nome)));
         $this->prezzoOriginale = htmlspecialchars(strip_tags($this->prezzoOriginale));
         $this->prezzoOutlet = $this->prezzoOriginale * 0.7;
         $this->scontoProdotto = htmlspecialchars(strip_tags($this->scontoProdotto));
         $this->barcode = htmlspecialchars(strip_tags($this->barcode));
         $this->giacenza = htmlspecialchars(strip_tags($this->giacenza));
-        $this->categoria = htmlspecialchars(strip_tags($this->categoria));
-        $this->colore = htmlspecialchars(strip_tags($this->colore));
-        $this->taglia = htmlspecialchars(strip_tags($this->taglia));
+        $this->categoria = strtoupper(htmlspecialchars(strip_tags($this->categoria)));
+        $this->colore = strtoupper(htmlspecialchars(strip_tags($this->colore)));
+        $this->taglia = strtoupper(htmlspecialchars(strip_tags($this->taglia)));
 
 
         //Bind data -> 

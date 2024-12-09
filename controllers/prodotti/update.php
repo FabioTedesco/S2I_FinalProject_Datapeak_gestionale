@@ -28,6 +28,8 @@ $prodotto->giacenza = $data->giacenza;
 $prodotto->prezzoOriginale = $data->prezzoOriginale;
 
 
+
+
 //update Prodotto
 if ($prodotto->update()) {
     echo json_encode(
