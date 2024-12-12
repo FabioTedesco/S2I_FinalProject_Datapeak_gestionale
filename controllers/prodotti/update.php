@@ -1,10 +1,17 @@
 <?php
 
-//Headers
-header('Access-Control-Allow-Origin: *');
+// Headers per le richieste CORS
+header('Access-Control-Allow-Origin: http://localhost:5173'); // Specifica il dominio del frontend
 header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: PUT');
-header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, Access-Control-Allow-Headers');
+header('Access-Control-Allow-Credentials: true'); // Se necessario per inviare cookie o credenziali
+
+// Gestione richiesta preflight
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 
 include_once '../../core/db.php';

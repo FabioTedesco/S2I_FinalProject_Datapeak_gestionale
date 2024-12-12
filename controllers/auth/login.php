@@ -1,52 +1,45 @@
 <?php
+require '../../vendor/autoload.php';
+include_once '../../core/db.php';
+include_once '../../models/User.php';
 
-session_start();
-
-
-//Headers
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: POST,  OPTIONS');
-header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
-
-// Gestione delle richieste OPTIONS
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
-require_once '../../core/db.php'; // Connessione al database
-require_once '../../models/User.php'; // Importa il modello utente
-
-$database = new Database();
-$db = $database->connect();
-
-// Prendi i dati dalla richiesta
-$data = json_decode(file_get_contents("php://input"));
+use Firebase\JWT\JWT;
 
 
 
-if (!empty($data->username) && !empty($data->password)) {
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents("php://input"));
+    $username = $data->username;
+    $password = $data->password_hash;
+
+    $database = new Database();
+    $db = $database->connect();
+
     $userModel = new User($db);
-    $user = $userModel->getUserByUsername($data->username);
+    $user = $userModel->login($username);
 
-    if ($user && password_verify($data->password, $user['password_hash'])) {
-        // Creazione sessione utente
-        $_SESSION['user_id'] = $user['userID'];  // Cambia 'id' in 'userID' come nel DB
-        $_SESSION['username'] = $user['username'];
-
-        echo json_encode([
-            "message" => "Login effettuato con successo.",
-            "user" => [
-                "userID" => $user['userID'],  // Cambia 'id' in 'userID'
-                "username" => $user['username']
+    if ($user && password_verify($password, $user['password_hash'])) {
+        $payload = [
+            'iss' => JWT_ISSUER,
+            'aud' => JWT_AUDIENCE,
+            'iat' => time(),
+            'nbf' => time(),
+            'exp' => time() + JWT_EXPIRATION,
+            'data' => [
+                'sub' => $user['userID'],
+                'username' => $user['username'],
+                'role' => $user['role']
             ]
+        ];
+
+
+        $jwt = \Firebase\JWT\JWT::encode($payload, JWT_SECRET, 'HS256');
+        echo json_encode([
+            'token' => $jwt,
         ]);
     } else {
         http_response_code(401);
-        echo json_encode(["message" => "Credenziali non valide."]);
+        echo json_encode(['message' => 'Credenziali non valide']);
     }
-} else {
-    http_response_code(400);
-    echo json_encode(["message" => "Dati incompleti."]);
 }

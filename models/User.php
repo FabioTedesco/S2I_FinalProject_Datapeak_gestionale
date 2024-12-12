@@ -1,38 +1,54 @@
 <?php
-
 class User
 {
     private $conn;
-    private $table = 'users';
 
-    // Proprietà dell'utente
-    public $userID;
-    public $username;
-    public $password_hash;
 
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
-    // Metodo per ottenere un utente tramite username
-    public function getUserByUsername($username)
+    public function login($username)
     {
-        $query = "SELECT * FROM " . $this->table . " WHERE username = :username LIMIT 1";
+        $query = "SELECT * FROM users WHERE username = :username";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':username', $username);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Metodo per registrare un nuovo utente 
-    public function registerUser($username, $password)
+    public function getUserByID($userID)
     {
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $query = "INSERT INTO " . $this->table . " (username, password_hash) VALUES (:username, :password_hash)";
+        $query = "SELECT userID, username, role FROM users WHERE userID = :userID";
         $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':userID', $userID);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC); // Restituisce l'utente o false
+    }
+
+    // Crea un nuovo utente
+    public function createUser($username, $passwordHash, $role)
+    {
+        $query = "INSERT INTO users (username,  password_hash, role) VALUES (:username, :password_hash, :role)";
+        $stmt = $this->conn->prepare($query);
+
         $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password_hash', $hashedPassword);
+        $stmt->bindParam(':password_hash', $passwordHash);
+        $stmt->bindParam(':role', $role);
+
+        return $stmt->execute(); // Restituisce true se l'inserimento è riuscito
+    }
+
+    // Elimina un utente
+    public function deleteUser($userID)
+    {
+        $query = "DELETE FROM users WHERE userID = :userID";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':userID', $userID);
+
         return $stmt->execute();
     }
 }

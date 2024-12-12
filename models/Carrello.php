@@ -6,6 +6,11 @@
 //aggiungi prodotto al carrello
 //return
 
+
+//scansiona --> 1) return articolo (dalla tabella articoli)
+//              2) crea elemento carrello (con id carrello e status aperto) e crea elemento articolo (che ha id, id_carrello e id_prodotto)
+//completa ordine --> 1)update status carrello
+
 class Carrello
 {
     private $conn;

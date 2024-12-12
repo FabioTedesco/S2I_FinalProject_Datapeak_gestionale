@@ -1,0 +1,17 @@
+{
+    "name": "utente/be",
+    "autoload": {
+        "psr-4": {
+            "Utente\\Be\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Fabio Tedesco",
+            "email": "fabio.tedesco1997@gmail.com"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^6.10"
+    }
+}

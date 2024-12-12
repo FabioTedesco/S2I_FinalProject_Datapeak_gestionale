@@ -6,6 +6,11 @@
 // define('DB_USER', $_ENV['DB_USER']);
 // define('DB_PASSWORD', $_ENV['DB_PASSWORD']);
 
+define('JWT_SECRET', 'vzC7ljNjG6VFFP0-QEhVZTsHOzEfBRlaBJ3JnwUhPPc');
+define('JWT_ISSUER', 'your_app_name');
+define('JWT_AUDIENCE', 'your_app_audience');
+define('JWT_EXPIRATION', 43200); // 1 ora
+
 
 class Database
 {
@@ -15,6 +20,7 @@ class Database
     private $username = 'root';
     private $password = 'galfadase5';
     private $conn;
+
 
     //DB connect
     public function connect()
