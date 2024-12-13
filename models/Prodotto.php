@@ -241,6 +241,16 @@ class Prodotto
         return false;
     }
 
+    //Update stock
+    public function updateQuantita($id, $quantita)
+    {
+        $query = 'UPDATE ' . $this->table . ' SET giacenza = giacenza - :quantity WHERE id = :id AND giacenza >= :quantity';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':quantity', $quantita);
+        return $stmt->execute();
+    }
+
     //Delete Prodotto
     public function delete()
     {
@@ -265,5 +275,18 @@ class Prodotto
         printf("Error: %s.\n", $stmt->error);
 
         return false;
+    }
+
+    // Get prodotto by barcode
+    public function getByBarcode($barcode)
+    {
+        $query = 'SELECT * FROM ' . $this->table . ' WHERE barcode = :barcode';
+
+        // Prepara lo statement
+        $stmt = $this->conn->prepare($query);
+        // $this->barcode = htmlspecialchars(strip_tags($this->barcode));
+        $stmt->bindParam(':barcode', $barcode);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
