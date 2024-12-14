@@ -1,15 +1,9 @@
 <?php
 
-//Headers
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: POST');
-header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
-
-
-include_once '../../core/db.php';
-include_once '../../models/Totali.php';
-include_once '../../models/Ordine.php';
+require '../../core/db.php';
+require '../../models/Totali.php';
+require '../../models/Ordine.php';
+require '../../core/headers.php';
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

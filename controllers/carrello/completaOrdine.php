@@ -1,10 +1,11 @@
 <?php
 require '../../vendor/autoload.php';
-require '../../core/db.php';
 require '../../models/Carrello.php';
 require '../../models/Articolo.php';
 require '../../models/Prodotto.php';
 require '../../models/Ordine.php';
+require '../../core/db.php';
+require '../../core/headers.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents("php://input"));

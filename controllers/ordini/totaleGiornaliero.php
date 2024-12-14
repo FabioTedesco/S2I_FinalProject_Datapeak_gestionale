@@ -1,10 +1,7 @@
 <?php
-// Headers
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
-
-include_once '../../core/db.php';
-include_once '../../models/Ordine.php';
+require '../../core/headers.php';
+require '../../core/db.php';
+require '../../models/Ordine.php';
 
 // Instatiate DB & connect
 $database = new Database();

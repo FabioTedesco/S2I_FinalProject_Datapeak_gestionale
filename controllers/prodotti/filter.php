@@ -1,10 +1,8 @@
 <?php
-// Headers
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
 
-include_once '../../core/db.php';
-include_once '../../models/Prodotto.php';
+require '../../core/db.php';
+require '../../models/Prodotto.php';
+require '../../core/headers.php';
 
 // Instatiate DB & connect
 $database = new Database();

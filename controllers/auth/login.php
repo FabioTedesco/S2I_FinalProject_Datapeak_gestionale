@@ -1,11 +1,19 @@
 <?php
 require '../../vendor/autoload.php';
-include_once '../../core/db.php';
-include_once '../../models/User.php';
+require '../../models/User.php';
+require '../../core/db.php';
+require '../../core/headers.php';
 
-use Firebase\JWT\JWT;
+use Dotenv\Dotenv;
 
+// Load file .env
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+$dotenv->load();
 
+define('JWT_ISSUER', $_ENV['JWT_ISSUER']);
+define('JWT_AUDIENCE', $_ENV['JWT_AUDIENCE']);
+define('JWT_EXPIRATION', $_ENV['JWT_EXPIRATION']);
+define('JWT_SECRET', $_ENV['JWT_SECRET']);
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

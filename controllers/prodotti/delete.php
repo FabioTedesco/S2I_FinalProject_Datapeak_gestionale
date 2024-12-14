@@ -1,14 +1,7 @@
 <?php
-
-//Headers
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: DELETE');
-header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
-
-
-include_once '../../core/db.php';
-include_once '../../models/Prodotto.php';
+require '../../core/headers.php';
+require '../../core/db.php';
+require '../../models/Prodotto.php';
 
 //Instatiate DB & connect
 $database = new Database();

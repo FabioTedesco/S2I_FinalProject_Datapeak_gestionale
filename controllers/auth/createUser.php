@@ -1,14 +1,9 @@
 <?php
-
 require '../../vendor/autoload.php';
-include_once '../../core/db.php';
-include_once '../../models/User.php';
+require '../../core/db.php';
+require '../../models/User.php';
+require '../../core/headers.php';
 
-//Headers
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: POST');
-header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 //Instatiate DB & connect
 $database = new Database();

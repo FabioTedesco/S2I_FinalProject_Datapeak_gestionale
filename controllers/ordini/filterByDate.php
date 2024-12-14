@@ -1,14 +1,8 @@
 <?php
 
-// Headers
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: GET');
-header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
-
-// Autoload e inclusione dei file richiesti
 require '../../vendor/autoload.php';
 require '../../core/db.php';
+require '../../core/headers.php';
 require '../../models/Ordine.php';
 
 // Metodo principale
