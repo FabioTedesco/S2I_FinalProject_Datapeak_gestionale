@@ -112,17 +112,7 @@ class Prodotto
             $query .= ' WHERE ' . implode(' AND ', $conditions);
         }
 
-        // Aggiungi LIMIT e OFFSET
-        $limit = 30; // Valore di default per limit
-        if (!empty($params['limit'])) {
-            $limit = intval($params['limit']);
-        }
-        if (!empty($params['offset'])) {
-            $offset = intval($params['offset']);
-            $query .= ' LIMIT ' . $limit . ' OFFSET ' . $offset;
-        } else {
-            $query .= ' LIMIT ' . $limit;
-        }
+
 
         // Prepara lo statement
         $stmt = $this->conn->prepare($query);

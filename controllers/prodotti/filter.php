@@ -18,8 +18,7 @@ $params = [
     'barcode' => isset($_GET['barcode']) ? $_GET['barcode'] : null,
     'categoria' => isset($_GET['categoria']) ? $_GET['categoria'] : null,
     'taglia' => isset($_GET['taglia']) ? $_GET['taglia'] : null,
-    'limit' => isset($_GET['limit']) ? $_GET['limit'] : null,
-    'offset' => isset($_GET['offset']) ? $_GET['offset'] : null,
+
 ];
 
 // prodotti filter query

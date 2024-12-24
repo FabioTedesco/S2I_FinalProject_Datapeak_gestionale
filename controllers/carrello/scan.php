@@ -2,9 +2,13 @@
 require '../../vendor/autoload.php';
 require '../../core/db.php';
 require '../../core/headers.php';
+
 require '../../models/Prodotto.php';
 require '../../models/Carrello.php';
 require '../../models/Articolo.php';
+
+
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents("php://input"));
@@ -55,5 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $barcode
     );
 
-    echo json_encode(['message' => 'Articolo aggiunto al carrello']);
+    // Recupera l'articolo appena aggiunto
+    $articoloAggiunto = $articoloModel->getArticoloAggiunto($carrello_id, $prodotto['id']);
+
+
+    echo json_encode([
+        'message' => 'Articolo aggiunto al carrello',
+        'articolo' => $articoloAggiunto
+    ]);
 }

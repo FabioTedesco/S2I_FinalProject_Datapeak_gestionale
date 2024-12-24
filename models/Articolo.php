@@ -11,8 +11,8 @@ class Articolo
     public $prezzoOriginale;
     public $prezzoOutlet;
     public $scontoProdotto;
-    public $scontoArticolo;
-    public $prezzoFinale;
+    public $scontoAggiunto;
+    public $prezzoScontato;
     public $barcode;
     public $ivaUnitaria;
     public $ivaTotale;
@@ -25,31 +25,51 @@ class Articolo
         $this->conn = $db;
     }
 
+    public function getQuantitaAttuale($carrello_id, $prodotto_id)
+    {
+        $query = 'SELECT quantita, ivaTotale, totaleArticolo FROM ' . $this->table . ' 
+              WHERE carrello_id = :carrello_id AND prodotto_id = :prodotto_id';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':carrello_id', $carrello_id);
+        $stmt->bindParam(':prodotto_id', $prodotto_id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
     public function aggiungiArticolo($carrello_id, $prodotto_id, $quantita,  $prezzoOriginale, $prezzoOutlet, $scontoProdotto, $barcode)
     {
+        $articoloCorrente = $this->getQuantitaAttuale($carrello_id, $prodotto_id);
+
+        // Calcola la quantità totale e gli importi
+        $quantitaTotale = ($articoloCorrente['quantita'] ?? 0) + $quantita;
+        if ($scontoProdotto == null) $scontoProdotto = 0;
+        $this->prezzoScontato = $prezzoOutlet * (1 - $scontoProdotto);
+        $this->ivaUnitaria = $this->prezzoScontato * 0.22;
+
+        $this->ivaTotale = $quantitaTotale * $this->ivaUnitaria;
+        $this->totaleArticolo = ($articoloCorrente['totaleArticolo'] ?? 0) + ($this->prezzoScontato * $quantita);
+
+
         $query = 'INSERT INTO '
-            . $this->table . ' (carrello_id, prodotto_id, quantita, prezzoOriginale, prezzoOutlet, scontoProdotto, prezzoFinale, barcode, ivaUnitaria, ivaTotale, totaleArticolo) 
-                  VALUES (:carrello_id, :prodotto_id, :quantita, :prezzoOriginale, :prezzoOutlet, :scontoProdotto, :prezzoFinale, :barcode, :ivaUnitaria, :ivaTotale, :totaleArticolo)
+            . $this->table . ' (carrello_id, prodotto_id, quantita, prezzoOriginale, prezzoOutlet, scontoProdotto, prezzoScontato, barcode, ivaUnitaria, ivaTotale, totaleArticolo) 
+                  VALUES (:carrello_id, :prodotto_id, :quantitaTotale, :prezzoOriginale, :prezzoOutlet, :scontoProdotto, :prezzoScontato, :barcode, :ivaUnitaria, :ivaTotale, :totaleArticolo)
                   ON DUPLICATE KEY UPDATE 
-                   quantita = quantita + VALUES(quantita),
-                   ivaTotale = ivaTotale + VALUES(ivaTotale),
-                   totaleArticolo = totaleArticolo + VALUES(totaleArticolo)';
+                    quantita = :quantitaTotale,
+                    ivaTotale = :ivaTotale,
+                    totaleArticolo = :totaleArticolo';
 
         $stmt = $this->conn->prepare($query);
 
-        if ($scontoProdotto == null) $scontoProdotto = 0;
-        $this->prezzoFinale = $prezzoOutlet * (1 - $scontoProdotto);
-        $this->ivaUnitaria = $this->prezzoFinale * 0.22;
-        $this->ivaTotale = $this->ivaUnitaria * $quantita;
-        $this->totaleArticolo = $this->prezzoFinale * $quantita;
+
 
         $stmt->bindParam(':carrello_id', $carrello_id);
         $stmt->bindParam(':prodotto_id', $prodotto_id);
-        $stmt->bindParam(':quantita', $quantita);
+        $stmt->bindParam(':quantitaTotale', $quantitaTotale);
         $stmt->bindParam(':prezzoOriginale', $prezzoOriginale);
         $stmt->bindParam(':prezzoOutlet', $prezzoOutlet);
         $stmt->bindParam(':scontoProdotto', $scontoProdotto);
-        $stmt->bindParam(':prezzoFinale', $this->prezzoFinale);
+        $stmt->bindParam(':prezzoScontato', $this->prezzoScontato);
         $stmt->bindParam(':barcode', $barcode);
         $stmt->bindParam(':ivaUnitaria', $this->ivaUnitaria);
         $stmt->bindParam(':ivaTotale', $this->ivaTotale);
@@ -74,7 +94,7 @@ class Articolo
         $queryUpdate = 'UPDATE ' . $this->table . ' 
                     SET quantita = quantita - 1,
                         ivaTotale = ivaTotale - ivaUnitaria,
-                        totaleArticolo = totaleArticolo - prezzoFinale 
+                        totaleArticolo = totaleArticolo - prezzoScontato 
                     WHERE id = :id';
         $stmtUpdate = $this->conn->prepare($queryUpdate);
         $stmtUpdate->bindParam(':id', $id);
@@ -109,6 +129,83 @@ class Articolo
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getArticoloAggiunto($carrello_id, $prodotto_id)
+    {
+        $query = "SELECT a.*, p.nome 
+              FROM articoli a
+              JOIN prodotti p ON a.prodotto_id = p.id
+              WHERE a.carrello_id = :carrello_id AND a.prodotto_id = :prodotto_id
+              LIMIT 1";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':carrello_id', $carrello_id);
+        $stmt->bindParam(':prodotto_id', $prodotto_id);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function aggiungiSconto($scontoAggiunto, $id)
+    {
+
+
+        // Recupera il prezzoScontato, carrello_id e totaleArticolo dell'articolo dal database
+        $utilityQuery = 'SELECT prezzoScontato, carrello_id, totaleArticolo, prodotto_id  FROM ' . $this->table . ' WHERE id = :id';
+        $stmt = $this->conn->prepare($utilityQuery);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            // Se l'articolo non esiste, return false
+            return false;
+        }
+
+        // Imposta $this->prezzoScontato
+        $this->prezzoScontato = $result['prezzoScontato'];
+        $this->carrello_id = $result['carrello_id'];
+        $this->prodotto_id = $result['prodotto_id'];
+        $this->totaleArticolo = $result['totaleArticolo'];
+
+        // Calcola il prezzo finale con lo sconto
+        $articoloCorrente = $this->getQuantitaAttuale($this->carrello_id, $this->prodotto_id);
+
+
+        // Calcola la quantità totale e gli importi
+        $quantitaTotale = ($articoloCorrente['quantita'] ?? 0);
+        if ($scontoAggiunto == null) $scontoAggiunto = 0;
+        $prezzoFinale = $this->prezzoScontato * (1 - $scontoAggiunto);
+        $this->ivaUnitaria = $prezzoFinale * 0.22;
+        $this->ivaTotale = $quantitaTotale * $this->ivaUnitaria;
+        $this->totaleArticolo = ($prezzoFinale * $quantitaTotale);
+
+        $query = 'UPDATE ' . $this->table . ' 
+                  SET scontoAggiunto = :scontoAggiunto, prezzoFinale = :prezzoFinale, totaleArticolo = :totaleArticolo, ivaTotale = :ivaTotale
+                  WHERE id = :id';
+
+
+        $prezzoFinale = $this->prezzoScontato * (1 - $scontoAggiunto);
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':scontoAggiunto', $scontoAggiunto);
+        $stmt->bindParam(':prezzoFinale', $prezzoFinale);
+        $stmt->bindParam(':totaleArticolo', $this->totaleArticolo);
+        $stmt->bindParam(':ivaTotale', $this->ivaTotale);
+        $stmt->bindParam(':id', $id);
+
+        // Se l'UPDATE ha successo, restituisce il valore calcolato di $prezzoFinale
+        if ($stmt->execute()) {
+            return [
+                'prezzoFinale' => $prezzoFinale,
+                'carrello_id' => $this->carrello_id
+            ];
+        }
+
+        // Se l'UPDATE fallisce, restituisce false
+        return false;
+    }
+
 
     public function calcolaTotaleCarrello($carrello_id)
     {
