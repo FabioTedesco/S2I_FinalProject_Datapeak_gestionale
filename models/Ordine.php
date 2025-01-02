@@ -22,15 +22,16 @@ class Ordine
         $this->conn = $db;
     }
 
-    public function createOrdine($operatore_id, $carrello_id, $totale, $metodoPagamento, $emailCliente)
+    public function createOrdine($operatore_id, $carrello_id, $totale, $ivaTotale, $metodoPagamento, $emailCliente)
     {
-        $query = "INSERT INTO " . $this->table . " (operatore_id, carrello_id, totale, metodoPagamento, emailCliente) VALUES (:operatore_id, :carrello_id, :totale, :metodoPagamento, :emailCliente)";
+        $query = "INSERT INTO " . $this->table . " (operatore_id, carrello_id, totale, ivaTotale, metodoPagamento, emailCliente) VALUES (:operatore_id, :carrello_id, :totale, :ivaTotale, :metodoPagamento, :emailCliente)";
 
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':operatore_id', $operatore_id);
         $stmt->bindParam(':carrello_id', $carrello_id);
         $stmt->bindParam(':totale', $totale);
+        $stmt->bindParam(':ivaTotale', $ivaTotale);
         $stmt->bindParam(':metodoPagamento', $metodoPagamento);
         $stmt->bindParam(':emailCliente', $emailCliente);
 

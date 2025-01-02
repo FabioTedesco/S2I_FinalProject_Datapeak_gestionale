@@ -8,11 +8,9 @@ require '../../models/Ordine.php';
 // Metodo principale
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Recupera i dati dalla richiesta
-    $data = json_decode(file_get_contents("php://input"));
 
-    // Valida i dati
-    $startDate = isset($data->startDate) ? $data->startDate : null;
-    $endDate = isset($data->endDate) ? $data->endDate : null;
+    $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : null;
+    $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : null;
 
     if (!$startDate) {
         http_response_code(400);
@@ -31,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $ordini = $ordineModel->getOrdiniByDate($startDate, $endDate);
 
         if (empty($ordini)) {
-            http_response_code(404);
+            http_response_code(200);
             echo json_encode(['message' => 'Nessun ordine trovato nel range specificato']);
         } else {
             http_response_code(200);

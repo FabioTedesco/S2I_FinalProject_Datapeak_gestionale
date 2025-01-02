@@ -30,8 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Calcola il totale del carrello
-    $totale = $articoloModel->calcolaTotaleCarrello($carrello['id']);
+    // Calcola totale e totaleIva
+    $totali = $articoloModel->calcolaTotaleCarrello($carrello['id']);
+
+    $totaleCarrello = $totali['totaleCarrello'];
+    $totaleIva = $totali['totaleIva'];
 
     //aggiorna la quantità dei prodotti
     $articoli = $articoloModel->getArticoli($carrello['id']);
@@ -41,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Crea l'ordine
-    $ordine->createOrdine($operatore_id, $carrello['id'],  $totale, $metodoPagamento, $emailCliente);
+    $ordine->createOrdine($operatore_id, $carrello['id'],  $totaleCarrello, $totaleIva, $metodoPagamento, $emailCliente);
 
     // Aggiorna lo stato del carrello
     $carrelloModel->updateStatus($carrello['id']);
@@ -49,7 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     echo json_encode([
         'message' => 'Ordine confermato',
-        'totale' => $totale,
+        'totaleCarrello' => $totaleCarrello,
+        'totaleIva' => $totaleIva,
         'Ordine creato' => $ordine->id
     ]);
 }

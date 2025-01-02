@@ -1,8 +1,7 @@
 <?php
-
+require '../../core/headers.php';
 require '../../core/db.php';
 require '../../models/Ordine.php';
-require '../../core/headers.php';
 
 // Instatiate DB & connect
 $database = new Database();
@@ -31,6 +30,7 @@ if ($num > 0) {
             'operatore_id' => $operatore_id,
             'carrello_id' => $carrello_id,
             'totale' => $totale,
+            'ivaTotale' => $ivaTotale,
             'created_at' => $created_at,
             'metodoPagamento' => $metodoPagamento,
             'emailCliente' => $emailCliente,

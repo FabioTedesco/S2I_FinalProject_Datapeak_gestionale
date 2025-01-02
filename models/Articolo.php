@@ -209,12 +209,16 @@ class Articolo
 
     public function calcolaTotaleCarrello($carrello_id)
     {
-        $query = 'SELECT SUM(totaleArticolo) as totaleCarrello FROM ' . $this->table . ' WHERE carrello_id = :carrello_id';
+        $query = 'SELECT SUM(totaleArticolo) as totaleCarrello, 
+                  SUM(ivaTotale) as totaleIva  FROM ' . $this->table . ' WHERE carrello_id = :carrello_id';
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':carrello_id', $carrello_id);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return $result['totaleCarrello'] ?? 0;
+        return [
+            'totaleCarrello' => $result['totaleCarrello'] ?? 0,
+            'totaleIva' => $result['totaleIva'] ?? 0,
+        ];
     }
 }
