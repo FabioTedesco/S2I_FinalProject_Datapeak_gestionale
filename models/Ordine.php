@@ -98,6 +98,10 @@ class Ordine
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return $result['totaleGiornaliero'];
+        if ($result['totaleGiornaliero'] === null) {
+            return 0;
+        } else {
+            return $result['totaleGiornaliero'];
+        }
     }
 }

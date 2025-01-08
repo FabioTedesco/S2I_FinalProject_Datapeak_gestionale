@@ -21,9 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Chiusura cassa
     $totali->chiusuraCassa($totaleGiornaliero);
 
-
-
     echo json_encode([
         'message' => 'Cassa chiusa con successo',
+        'totale' => $totaleGiornaliero
     ]);
 }

@@ -36,6 +36,18 @@ class Articolo
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getQuantitaArticoloInCarrello($carrello_id, $prodotto_id)
+    {
+        $query = 'SELECT SUM(quantita) as total FROM articoli WHERE carrello_id = :carrello_id AND prodotto_id = :prodotto_id';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':carrello_id', $carrello_id);
+        $stmt->bindParam(':prodotto_id', $prodotto_id);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'] ?? 0;
+    }
+
+
 
     public function aggiungiArticolo($carrello_id, $prodotto_id, $quantita,  $prezzoOriginale, $prezzoOutlet, $scontoProdotto, $barcode)
     {

@@ -28,6 +28,15 @@ class User
         return $stmt->fetch(PDO::FETCH_ASSOC); // Restituisce l'utente o false
     }
 
+    public function getAllUsers()
+    {
+        $query = "SELECT * FROM users ORDER BY created_at";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt; // Restituisce l'utente o false
+
+    }
+
     // Crea un nuovo utente
     public function createUser($username, $passwordHash, $role)
     {
