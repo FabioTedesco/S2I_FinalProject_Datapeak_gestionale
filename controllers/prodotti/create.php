@@ -27,6 +27,7 @@ $prodotto->taglia = $data->taglia;
 
 // Verifica se il prodotto esiste già (per nome o barcode)
 if ($prodotto->exists()) {
+    http_response_code(409);
     echo json_encode(
         array('message' => 'Prodotto esistente, non può essere creato di nuovo. Verificare nome o barcode.')
     );

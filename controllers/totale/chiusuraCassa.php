@@ -15,8 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $totali = new Totali($db);
     $incassoTotale = new Ordine($db);
 
+
     // Calcola il totale giornaliero
     $totaleGiornaliero = $incassoTotale->totaleGiornaliero();
+
 
     // Chiusura cassa
     $totali->chiusuraCassa($totaleGiornaliero);
