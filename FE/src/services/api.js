@@ -1,10 +1,8 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const BASE_URL = "http://localhost/Be/controllers";
-
 const API = axios.create({
-  baseURL: BASE_URL,
+  baseURL: "http://backend:8080/controllers",
   headers: {
     "Content-Type": "application/json",
   },

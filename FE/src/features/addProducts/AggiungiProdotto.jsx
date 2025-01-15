@@ -63,7 +63,7 @@ function Aggiungi_prodotto() {
         className="relative max-w-md mx-auto bg-white p-6 rounded-lg shadow-md mt-4"
       >
         <Link
-          to="/magazzino"
+          to="/prodotti"
           className="absolute top-4 left-4 text-gray-600 hover:text-gray-800"
         >
           <FontAwesomeIcon icon={faArrowLeft} />

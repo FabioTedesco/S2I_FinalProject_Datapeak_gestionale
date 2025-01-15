@@ -128,6 +128,7 @@ function Cassa() {
         {/* Sezione di input per il codice a barre */}
         <div className="flex items-center space-x-4 mb-6">
           <input
+            name="barcode"
             type="text"
             placeholder="Inserisci il codice a barre"
             value={barcode}
@@ -213,12 +214,14 @@ function Cassa() {
                   <td className="py-2 px-4 border-b text-gray-700">
                     <input
                       className="w-full border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      name="sconto"
                       type="number"
                       onChange={(e) => setSconto(e.target.value)}
                     />
                     <div className="flex mt-1">
                       <input
                         className="mr-2"
+                        name="gratis"
                         type="checkbox"
                         onChange={() => setSconto(100)}
                       />

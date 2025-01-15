@@ -87,6 +87,7 @@ function PaymentModal() {
             <label className="flex items-center">
               <input
                 type="radio"
+                name="metodoPagamento"
                 value="contanti"
                 checked={metodoPagamento === "contanti"}
                 onChange={() => dispatch(setMetodoPagamento("contanti"))}
@@ -97,6 +98,7 @@ function PaymentModal() {
             <label className="flex items-center">
               <input
                 type="radio"
+                name="metodoPagamento"
                 value="cdc"
                 checked={metodoPagamento === "cdc"}
                 onChange={() => dispatch(setMetodoPagamento("cdc"))}
@@ -114,6 +116,7 @@ function PaymentModal() {
           </label>
           <input
             type="email"
+            name="emailCliente"
             value={emailCliente}
             onChange={handleEmailChange}
             placeholder="Inserisci l'email del cliente"

@@ -8,7 +8,7 @@ const AggiungiOperatori = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("Admin");
+  const [role, setRole] = useState("User");
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
 

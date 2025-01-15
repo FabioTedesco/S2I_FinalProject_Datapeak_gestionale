@@ -37,9 +37,13 @@ function StoricoOrdini() {
     dispatch(setVisualizzaOrdine(true));
   };
 
-  const ordiniOrdinati = [...ordini].sort((a, b) => {
-    return new Date(b.data) - new Date(a.data);
-  });
+  // const ordiniOrdinati = ordini ? (
+  //   [...ordini].sort((a, b) => {
+  //     return new Date(b.data) - new Date(a.data);
+  //   })
+  // ) : (
+  //   <p>Non ci sono ordini</p>
+  // );
 
   return (
     <>
@@ -83,46 +87,61 @@ function StoricoOrdini() {
               </tr>
             </thead>
             <tbody>
-              {(ordiniFiltrati.length > 0
-                ? ordiniFiltrati
-                : ordiniOrdinati
-              ).map((ordine) => (
-                <tr key={ordine.id} className="hover:bg-gray-100">
-                  <td className="py-2 px-4 border-b text-gray-700">
-                    {ordine.id}
-                  </td>
-                  <td className="py-2 px-4 border-b text-gray-700">
-                    {ordine.created_at}
-                  </td>
-                  <td className="py-2 px-4 border-b text-gray-700">
-                    €{ordine.totale}
-                  </td>
-                  <td className="py-2 px-4 border-b text-gray-700">
-                    {ordine.metodoPagamento}
-                  </td>
-                  <td className="py-2 px-4 border-b text-gray-700">
-                    {ordine.emailCliente}
-                  </td>
-                  <td className="py-2 px-4 border-b text-gray-700 space-x-2">
-                    <div className="flex flex-col sm:flex-row sm:space-x-2">
-                      <button
-                        className="bg-blue-500 text-white font-semibold py-1 px-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 "
-                        onClick={() => {
-                          handleVisualizzaOrdine(ordine.carrello_id, ordine.id);
-                        }}
-                      >
-                        Visualizza Ordine
-                      </button>
-                      <button
-                        onClick={() => handleDeleteOrder(ordine.id)}
-                        className="bg-red-500 text-white font-semibold py-1 px-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-                      >
-                        Elimina
-                      </button>
-                    </div>
+              {ordini &&
+              (ordiniFiltrati.length > 0 ? ordiniFiltrati : ordini).length >
+                0 ? (
+                (ordiniFiltrati.length > 0 ? ordiniFiltrati : ordini).map(
+                  (ordine) => (
+                    <tr key={ordine.id} className="hover:bg-gray-100">
+                      <td className="py-2 px-4 border-b text-gray-700">
+                        {ordine.id}
+                      </td>
+                      <td className="py-2 px-4 border-b text-gray-700">
+                        {ordine.created_at}
+                      </td>
+                      <td className="py-2 px-4 border-b text-gray-700">
+                        €{ordine.totale}
+                      </td>
+                      <td className="py-2 px-4 border-b text-gray-700">
+                        {ordine.metodoPagamento}
+                      </td>
+                      <td className="py-2 px-4 border-b text-gray-700">
+                        {ordine.emailCliente}
+                      </td>
+                      <td className="py-2 px-4 border-b text-gray-700 space-x-2">
+                        <div className="flex flex-col sm:flex-row sm:space-x-2">
+                          <button
+                            className="bg-blue-500 text-white font-semibold py-1 px-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                            onClick={() =>
+                              handleVisualizzaOrdine(
+                                ordine.carrello_id,
+                                ordine.id
+                              )
+                            }
+                          >
+                            Visualizza Ordine
+                          </button>
+                          <button
+                            onClick={() => handleDeleteOrder(ordine.id)}
+                            className="bg-red-500 text-white font-semibold py-1 px-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                          >
+                            Elimina
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                )
+              ) : (
+                <tr>
+                  <td
+                    colSpan="6"
+                    className="py-2 px-4 text-center text-gray-700 font-bold underline"
+                  >
+                    Non ci sono ordini
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

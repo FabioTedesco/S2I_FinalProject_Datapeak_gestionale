@@ -13,3 +13,9 @@ pulsante genera report (no progetto)
 
 MAGAZZINO
 aggiungi pagina e upload file excel
+
+per switchare localhost a docker
+
+cambia url frontend
+cambia headers be
+cambia env da locahohost a db

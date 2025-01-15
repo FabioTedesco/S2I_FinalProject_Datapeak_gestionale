@@ -1,9 +1,8 @@
-import API from "./api";
 import axios from "axios";
 import store from "../store/store";
 
 const privateAxios = axios.create({
-  baseURL: "http://localhost/Be/controllers",
+  baseURL: "http://backend:8080/controllers",
   headers: {
     "Content-Type": "application/json",
   },
@@ -12,6 +11,7 @@ const privateAxios = axios.create({
 
 // Interceptor per le risposte
 privateAxios.interceptors.request.use((config) => {
+  console.log("Request URL:", config.baseURL + config.url);
   const state = store.getState();
   const token = state.auth.token;
   if (token) {
@@ -22,7 +22,7 @@ privateAxios.interceptors.request.use((config) => {
 
 // Login
 export const login = (username, password_hash) =>
-  API.post("/auth/login.php", { username, password_hash });
+  privateAxios.post("/auth/login.php", { username, password_hash });
 
 //Auth
 export const auth = async () => {
@@ -31,11 +31,12 @@ export const auth = async () => {
 };
 
 //getAllUsers
-export const getAllUsers = () => API.get("/auth/getAll.php");
+export const getAllUsers = () => privateAxios.get("/auth/getAll.php");
 
 //createUser
-export const createUser = (user) => API.post("/auth/createUser.php", user);
+export const createUser = (user) =>
+  privateAxios.post("/auth/createUser.php", user);
 
 //deleteUser
 export const deleteUser = (id) =>
-  API.delete(`/auth/deleteUser.php`, { data: { id } });
+  privateAxios.delete(`/auth/deleteUser.php`, { data: { id } });

@@ -1,0 +1,60 @@
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    ports:
+      - "3307:3306" # MySQL will be accessible on localhost:3307
+    environment:
+      MYSQL_ROOT_PASSWORD: galfadase5
+      MYSQL_DATABASE: datapeak_gestionale_vendite
+      MYSQL_USER: user
+      MYSQL_PASSWORD: galfadase5
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - datapeak
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./be
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8080:80" # Backend will be accessible on localhost:8080
+    volumes:
+      - ./be:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_HOST=db
+      - DB_NAME=datapeak_gestionale_vendite
+      - DB_USER=user
+      - DB_PASSWORD=galfadase5
+    networks:
+      - datapeak
+
+  frontend:
+    build:
+      context: ./fe
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:80" # Frontend will be accessible on localhost:3000
+    volumes:
+      - ./fe:/FE
+    networks:
+      - datapeak
+
+volumes:
+  db_data:
+
+networks:
+  datapeak:

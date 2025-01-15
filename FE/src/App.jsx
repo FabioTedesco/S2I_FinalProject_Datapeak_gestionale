@@ -5,8 +5,8 @@ import ProductsPage from "./pages/ProductsPage";
 import CartPage from "./pages/CartPage";
 import StoricoOrdiniPage from "./pages/StoricoOrdiniPage";
 import Login from "./pages/Login";
-import AdminPage from "./pages/AdminPage";
 import PrivateRoute from "./features/auth/PrivateRoute";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   return (
