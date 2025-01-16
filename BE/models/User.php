@@ -33,8 +33,7 @@ class User
         $query = "SELECT * FROM users ORDER BY created_at";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        return $stmt; // Restituisce l'utente o false
-
+        return $stmt;
     }
 
     // Crea un nuovo utente

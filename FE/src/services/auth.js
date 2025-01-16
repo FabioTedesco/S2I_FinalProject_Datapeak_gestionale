@@ -2,7 +2,7 @@ import axios from "axios";
 import store from "../store/store";
 
 const privateAxios = axios.create({
-  baseURL: "http://backend:8080/controllers",
+  baseURL: "http://localhost:8080/controllers",
   headers: {
     "Content-Type": "application/json",
   },
