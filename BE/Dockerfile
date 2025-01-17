@@ -1,30 +1,33 @@
-# Use a base image with PHP and Apache
+# Usa un'immagine base con PHP e Apache
 FROM php:8.2-apache
 
-# Install required packages and PHP extensions
+# Abilita moduli Apache e estensioni PHP necessari
 RUN apt-get update && apt-get install -y \
-    libzip-dev zip unzip sqlite3 libsqlite3-dev \
-    && docker-php-ext-install pdo pdo_mysql pdo_sqlite \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    libzip-dev zip unzip \
+    && docker-php-ext-install pdo pdo_mysql
 
-# Install Composer
+# Installa Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set the working directory
+# Imposta la working directory
 WORKDIR /var/www/html
 
-# Copy project files
+# Copia i file del progetto
 COPY . .
 
-# Install PHP dependencies
+# Copia il file SQL necessario per le migrazioni
+COPY ./core/datapeak_gestionale_vendite.sql /var/www/html/core/
+
+# Installa le dipendenze PHP tramite Composer
+COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader
 
-# Set permissions for Apache
+# Imposta i permessi per il server web
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# Expose port 80
+# Esponi la porta 80
 EXPOSE 80
 
-# Run migration script and start Apache
-CMD php /var/www/html/core/migrate.php || echo "Migration failed, starting Apache anyway..." && apache2-foreground
+# Comando per eseguire il migration script e avviare Apache
+CMD php /var/www/html/core/migrate.php && apache2-foreground
