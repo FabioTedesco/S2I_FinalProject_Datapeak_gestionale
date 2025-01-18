@@ -1,13 +1,9 @@
 <?php
 require '../../vendor/autoload.php';
 
-use Dotenv\Dotenv;
 
-// Load file .env
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
 
-define('JWT_SECRET', $_ENV['JWT_SECRET']);
+define('JWT_SECRET', getenv('JWT_SECRET'));
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;

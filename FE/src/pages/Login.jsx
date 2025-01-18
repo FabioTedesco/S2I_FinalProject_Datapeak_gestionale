@@ -42,7 +42,7 @@ const Login = () => {
       const data = await login(username, password);
       dispatch(setToken(data.data));
       const authentication = await auth();
-      dispatch(setLogin(authentication.data.data));
+      dispatch(setLogin(authentication.data));
 
       navigate("/");
     } catch (error) {
