@@ -4,16 +4,12 @@ require '../../models/User.php';
 require '../../core/db.php';
 require '../../core/headers.php';
 
-// use Dotenv\Dotenv;
 
-// Load file .env
-// $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
-// $dotenv->load();
 
-define('JWT_ISSUER', 'JWT_ISSUER');
-define('JWT_AUDIENCE', 'JWT_AUDIENCE');
-define('JWT_EXPIRATION', 'JWT_EXPIRATION');
-define('JWT_SECRET', 'JWT_SECRET');
+define('JWT_ISSUER', getenv('JWT_ISSUER'));
+define('JWT_AUDIENCE', getenv('JWT_AUDIENCE'));
+define('JWT_EXPIRATION',  getenv('JWT_EXPIRATION'));
+define('JWT_SECRET', getenv('JWT_SECRET'));
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
