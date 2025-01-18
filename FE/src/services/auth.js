@@ -2,7 +2,8 @@ import axios from "axios";
 import store from "../store/store";
 
 const privateAxios = axios.create({
-  baseURL: "http://localhost:8080/controllers",
+  baseURL:
+    "http://s2ifinalprojectdatapeakgestio-production.up.railway.app/controllers",
   headers: {
     "Content-Type": "application/json",
   },
