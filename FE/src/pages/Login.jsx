@@ -46,7 +46,7 @@ const Login = () => {
 
       navigate("/");
     } catch (error) {
-      Swal.fire("Errore", "Credenziali non valide. Riprova.", "error");
+      Swal.fire("Errore", `${error.response.data.message}`, "error");
     }
   };
 
