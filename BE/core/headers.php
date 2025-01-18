@@ -7,6 +7,7 @@ header("Access-Control-Allow-Credentials: true"); // Permetti credenziali (se ne
 
 // Gestione richiesta preflight (OPTIONS)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    error_log("Handling OPTIONS request");
     http_response_code(200);
     exit();
 }

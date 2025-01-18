@@ -1,9 +1,9 @@
 <?php
+require '../../core/headers.php';
 require '../../vendor/autoload.php';
 require '../../middleware/authMiddleware.php';
 require '../../core/db.php';
 require '../../models/User.php';
-require '../../core/headers.php';
 
 // Autentica la richiesta
 $decodedToken = authenticate();
