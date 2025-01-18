@@ -3,7 +3,7 @@ import store from "../store/store";
 
 const privateAxios = axios.create({
   baseURL:
-    "http://s2ifinalprojectdatapeakgestio-production.up.railway.app/controllers",
+    "https://s2ifinalprojectdatapeakgestio-production.up.railway.app/controllers",
   headers: {
     "Content-Type": "application/json",
   },
