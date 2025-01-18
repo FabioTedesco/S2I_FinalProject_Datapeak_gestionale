@@ -2,11 +2,7 @@
 
 require __DIR__ . '/../' . 'vendor/autoload.php';
 
-use Dotenv\Dotenv;
 
-// Load file .env
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
 
 define('DB_HOST', getenv('MYSQLHOST'));
 define('DB_PORT', getenv('MYSQLPORT'));
