@@ -1,7 +1,10 @@
 import { update } from "../../services/productsService";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteProduct } from "../../features/products/productsSlice";
+import {
+  deleteProduct,
+  fetchProducts,
+} from "../../features/products/productsSlice";
 import { deleteProdotto } from "../../services/productsService";
 
 import Swal from "sweetalert2";
@@ -14,7 +17,7 @@ const ModificaProdottoModal = ({ setModificaModal }) => {
     prodotto.prezzoOriginale
   );
   const prezzoOutlet = prodotto.prezzoOutlet;
-  const [sconto, setSconto] = useState(prodotto.scontoProdotto * 100); // Visualizza sconto come percentuale
+  const [sconto, setSconto] = useState(prodotto.scontoProdotto * 100);
   const [giacenza, setGiacenza] = useState(prodotto.giacenza);
   const [errors, setErrors] = useState({});
 
@@ -57,6 +60,7 @@ const ModificaProdottoModal = ({ setModificaModal }) => {
 
       if (response.status === 200) {
         Swal.fire("Prodotto aggiornato con successo!");
+        dispatch(fetchProducts());
       } else {
         console.error(
           "Errore durante l'aggiornamento del prodotto:",

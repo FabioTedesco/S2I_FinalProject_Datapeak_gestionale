@@ -24,7 +24,7 @@ const Products = () => {
           <thead>
             <tr>
               <th className="p-2 border-b font-semibold text-gray-600 text-left underline">
-                id
+                Id
               </th>
               <th className="p-2 border-b font-semibold text-gray-600 text-left underline">
                 Nome Prodotto

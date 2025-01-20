@@ -94,7 +94,7 @@ const VisualizzaOrdineModal = () => {
 
           {/* Payment Method */}
           <div className="text-center mt-4">
-            <p>Metodo di Pagamento: </p>
+            <p>Metodo di Pagamento: {ordine.metodoPagamento} </p>
             <p>Grazie per aver acquistato da noi!</p>
           </div>
         </div>
