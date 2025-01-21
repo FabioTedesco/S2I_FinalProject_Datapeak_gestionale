@@ -90,12 +90,7 @@ const DateFilter = () => {
         >
           Filtra ordini
         </button>
-        <button
-          className="bg-[#0d1829] text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
-          // onClick={handleApplyFilter}
-        >
-          Scarica storico
-        </button>
+
         {ordiniFiltrati.length > 0 && (
           <Button
             testo="Reset"
