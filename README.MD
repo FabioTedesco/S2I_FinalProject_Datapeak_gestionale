@@ -2,9 +2,9 @@
 
 The application is a point-of-sale management system that allows users to manage the store and the cash register in a simple and fast way.
 
-![Project Logo](fe/src/assets/log_bullpadel.png)
+![Project Logo](FE/src/assets/log_bullpadel.png)
 
-Visit our website: [Project Website](https://gestionaledatapeak.up.railway.app)
+Visit: [Project Website](https://gestionaledatapeak.up.railway.app)
 
 ---
 
