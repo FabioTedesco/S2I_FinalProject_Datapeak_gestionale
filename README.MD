@@ -2,10 +2,9 @@
 
 The application is a point-of-sale management system that allows users to manage the store and the cash register in a simple and fast way.
 
-![Datapeak Logo](FE/src/assets/datapeak.png)
 ![Project Logo](FE/src/assets/log_bullpadel.png)
 
-Visit: [Project Website](https://gestionaledatapeak.up.railway.app)
+Visit: [Replica Website](https://gestionaledatapeak.up.railway.app)
 
 ---
 
@@ -170,5 +169,9 @@ Follow these steps to set up the project locally using Docker:
 For inquiries or support, please reach out to:
 
 - **Email**: (fabio.tedesco1997@gmail.com)
+
+<div align="center">
+  <img src="FE/src/assets/datapeak.png" alt="Datapeak Logo" />
+</div>
 
 ---
