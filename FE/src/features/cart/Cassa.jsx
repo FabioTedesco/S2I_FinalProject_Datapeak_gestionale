@@ -92,9 +92,7 @@ function Cassa() {
   };
 
   const calculateTotaleComplessivo = () => {
-    return (
-      parseFloat(calculateTotalIva()) + parseFloat(calculateTotaleOrdine())
-    ).toFixed(2);
+    return parseFloat(calculateTotaleOrdine()).toFixed(2);
   };
 
   const handleReset = async (id) => {
@@ -282,7 +280,7 @@ function Cassa() {
           <span className="text-xl font-semibold text-gray-800">
             IVA Totale: € {calculateTotalIva()}
             <br />
-            Totale Ordine (IVA inclusa): € {calculateTotaleComplessivo()}
+            Totale Ordine (IVA inclusa): € {calculateTotaleOrdine()}
           </span>
         </div>
 

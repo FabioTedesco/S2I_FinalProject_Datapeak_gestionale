@@ -33,7 +33,9 @@ class User
         $query = "SELECT * FROM users ORDER BY created_at";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        return $stmt;
+        // return $stmt;
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Crea un nuovo utente
