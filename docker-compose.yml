@@ -7,10 +7,10 @@ services:
     ports:
       - "3307:3306" # MySQL will be accessible on localhost:3307
     environment:
-      MYSQL_ROOT_PASSWORD: galfadase5
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: datapeak_gestionale_vendite
       MYSQL_USER: user
-      MYSQL_PASSWORD: galfadase5
+      MYSQL_PASSWORD: password
     volumes:
       - db_data:/var/lib/mysql
     networks:
@@ -37,7 +37,7 @@ services:
       - DB_HOST=db
       - DB_NAME=datapeak_gestionale_vendite
       - DB_USER=user
-      - DB_PASSWORD=galfadase5
+      - DB_PASSWORD=password
     networks:
       - datapeak
 
