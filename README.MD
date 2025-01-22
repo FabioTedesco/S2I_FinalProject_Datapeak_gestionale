@@ -170,8 +170,6 @@ For inquiries or support, please reach out to:
 
 - **Email**: (fabio.tedesco1997@gmail.com)
 
-<div align="center">
-  <img src="FE/src/assets/datapeak.png" alt="Datapeak Logo" />
-</div>
+![Datapeak Logo](FE/src/assets/datapeak.png)
 
 ---
