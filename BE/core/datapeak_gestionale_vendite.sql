@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `totali` (
 
 INSERT INTO `prodotti` (`id`, `nome`, `descrizione`, `prezzoOriginale`, `prezzoOutlet`, `scontoProdotto`, `barcode`, `giacenza`, `categoria`, `colore`, `taglia`) VALUES
 (2, 'ZAP.BULLPADEL FLOW HYB FLY 22I BL/K', '', 93.00, 65.10, '0.06', '8445402156344', 0, 'SCARPE - DONNA', 'BLANCO/KAKI', '38,5'),
-(3, 'ZAP.BULLPADEL FLOW HYB FLY 23I N/F', '', 124.95, 87.47, '10', '8445402446933', 0, 'SCARPE - DONNA', 'NEGRO/FUCSIA', '36'),
+(3, 'ZAP.BULLPADEL FLOW HYB FLY 23I N/F', '', 124.95, 87.47, '0.10', '8445402446933', 0, 'SCARPE - DONNA', 'NEGRO/FUCSIA', '36'),
 (7, 'ZAP.BULLPADEL FLOW HYB FLY 23I N/F', '', 124.95, 87.46, '', '8445402446971', 1, 'SCARPE - DONNA', 'NEGRO/FUCSIA', '38,5'),
 (8, 'ZAP.BULLPADEL FLOW HYB FLY 23I N/F', '', 124.95, 87.46, '', '8445402446988', 2, 'SCARPE - DONNA', 'NEGRO/FUCSIA', '39'),
 (9, 'ZAP.BULLPADEL FLOW HYB FLY 23I N/F', '', 124.95, 87.46, '', '8445402446995', 0, 'SCARPE - DONNA', 'NEGRO/FUCSIA', '39,5'),
@@ -1844,6 +1844,4 @@ INSERT INTO `prodotti` (`id`, `nome`, `descrizione`, `prezzoOriginale`, `prezzoO
 
 
 INSERT INTO `users` (`userID`, `username`, `password_hash`, `role`, `created_at`) VALUES
-(7, 'fabio', '$2y$10$RNJDNHdr1F7hhfll26If4uVtJaHbnZdnRER7kqyIuM2n1XnuZQS4m', 'admin', '2025-01-04 16:37:56'),
-(13, 'Simone', '$2y$10$Fz.7qEhdBAZq13/P75HvGOwOhMefsDxOUmXqfVMEgor.v5wPgK6Dy', 'user', '2025-01-10 20:21:44'),
-(24, 'davide', '$2y$10$37ZNa0HblIgNAcCiVNn4CuiiSk/MbTWnZ1UJdgg7YxfaM8c/m5NKO', 'user', '2025-01-10 21:06:51');
+(7, 'fabio', '$2y$10$RNJDNHdr1F7hhfll26If4uVtJaHbnZdnRER7kqyIuM2n1XnuZQS4m', 'admin', '2025-01-04 16:37:56');
