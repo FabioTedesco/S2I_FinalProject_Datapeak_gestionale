@@ -24,6 +24,11 @@ Visit: [Replica Website](https://gestionaledatapeak.up.railway.app)
 The Datapeak Management System for Bullpadel Shop represents the final project of my journey in the Start2Impact Fullstack Master program.
 At the same time, it is a first prototype for an application developed for Datapeak (an IT consulting company) for a client: Bullpadel Shop (a padel product outlet).
 
+**Credentials**:
+
+- username: prova
+- password: pssprova
+
 ## Tech Stack
 
 ### Backend
