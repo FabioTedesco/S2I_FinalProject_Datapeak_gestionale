@@ -2,6 +2,7 @@
 
 The application is a point-of-sale management system that allows users to manage the store and the cash register in a simple and fast way.
 
+![Datapeak Logo](FE/src/assets/datapeak.png)
 ![Project Logo](FE/src/assets/log_bullpadel.png)
 
 Visit: [Project Website](https://gestionaledatapeak.up.railway.app)
